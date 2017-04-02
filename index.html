@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>
+			SavvyHomework
+		</title>
+		<script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+		<link rel="import" href="bower_components/paper-button/paper-button.html">
+		<link rel="import" href="bower_components/paper-input/paper-input.html">
+		<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+		<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+		<script>
+			var socket = io();
+			function submit(e) {
+				socket.emit('myMessage', $('#myMsg').val());
+				$('#myMsg').val('');
+				return;
+			}
+			
+			socket.on('myMessage', function(msg){
+			if (msg) {
+				console.log('Received a message! Your message is: ' + msg);
+				$('#GetMessages').append($('<li>').text('Received a message! Your message is: ' + msg));
+				}else {
+					alert('Please enter at least one character!');
+				}
+			});
+		</script>
+		<style>
+			form {
+				padding: 3px;
+				position: fixed;
+				bottom: 0;
+				width: 100%;
+			}
+			paper-input {
+				width: 70%;
+			};
+			paper-button {
+				width: 20px;
+			}
+			#GetMessages li {
+				padding: 5px 10px;
+			}
+		</style>
+	</head>
+<body fullbleed unresolved>
+	<ul id="GetMessages"></ul>
+	<form action="">
+		<paper-input id="myMsg" label="Please Enter Your Message"></paper-input>
+		<paper-button id="cl" raised onclick="submit(this)">Send Message</paper-button>
+	</form>	
+</body>
+</html>
